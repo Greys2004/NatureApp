@@ -13,10 +13,10 @@ export class TrailService {
         let params = new HttpParams();
         if (placeId) params = params.set('placeId', placeId);
         if (difficulty) params = params.set('difficulty', difficulty);
-        return this.http.get<Trail[]>(`${environment.API_URL}/api/trails`, { params });
+        return this.http.get<Trail[]>(`${environment.API_URL}/trails`, { params });
     }
 
     getById(id: number): Observable<Trail> {
-        return this.http.get<Trail>(`${environment.API_URL}/api/trails/${id}`);
+        return this.http.get<Trail>(`${environment.API_URL}/trails/${id}`);
     }
 }

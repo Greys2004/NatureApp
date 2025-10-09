@@ -13,11 +13,14 @@ export class PlaceService {
   ) {}
 
   getAll(category?: string, difficulty?: string): Observable<Place[]> {
-    let params = new HttpParams();
-    if (category) params = params.set('category', category);
-    if (difficulty) params = params.set('difficulty', difficulty);
-    return this.httpClient.get<Place[]>(`${environment.API_URL}/places`, { params });
-  }
+  let params = new HttpParams();
+  if (category) params = params.set('category', category);
+  if (difficulty) params = params.set('difficulty', difficulty);
+
+  const url = `${environment.API_URL}/place`;
+  console.log('Llamando al backend:', url);
+  return this.httpClient.get<Place[]>(url, { params });
+}
 
   getById(id: number): Observable<Place> {
     return this.httpClient.get<Place>(`${environment.API_URL}/places/${id}`);
