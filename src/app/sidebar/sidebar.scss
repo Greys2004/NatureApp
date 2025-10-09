@@ -1,0 +1,5 @@
+.wrap { padding: 1rem; }
+h2 { margin:0 0 1rem; font-size:1.25rem; }
+nav { display:flex; flex-direction:column; gap:.5rem; }
+a { color:#cbd5e1; text-decoration:none; padding:.5rem .75rem; border-radius:.5rem; }
+a.active, a:hover { background:#1e293b; color:#fff; }

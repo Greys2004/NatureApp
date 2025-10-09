@@ -5,10 +5,9 @@ import {PlaceService} from '../../core/services/place.service';
 
 @Component({
   selector: 'app-home',
-  imports: [],
   templateUrl: './home.html',
   styleUrl: './home.scss',
-  providers: [PlaceService]
+  standalone: false
 })
 export class Home implements OnInit{
   map!: mapboxgl.Map;

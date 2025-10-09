@@ -23,6 +23,6 @@ export class PlaceService {
 }
 
   getById(id: number): Observable<Place> {
-    return this.httpClient.get<Place>(`${environment.API_URL}/places/${id}`);
+    return this.httpClient.get<Place>(`${environment.API_URL}/place/${id}`);
   }
 }
