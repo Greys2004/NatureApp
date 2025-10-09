@@ -1,1 +1,25 @@
-<p>places works!</p>
+<h2>Lugares</h2>
+
+<table class="table" *ngIf="places?.length">
+    <thead>
+        <tr>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Coordenadas</th>
+        <th>Accesible</th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of places">
+        <td>{{p.name}}</td>
+        <td>{{p.category}}</td>
+        <td>{{p.latitude}}, {{p.longitude}}</td>
+        <td>{{p.accessible ? 'Sí' : 'No'}}</td>
+        <td><a [routerLink]="['/admin','place', p.id]">Ver</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<div *ngIf="!places?.length">No hay lugares.</div>
+
