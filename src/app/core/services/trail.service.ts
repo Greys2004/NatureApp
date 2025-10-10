@@ -9,11 +9,9 @@ export class TrailService {
 
     constructor(private http: HttpClient) {}
 
-    getAll(placeId?: number, difficulty?: string): Observable<Trail[]> {
-        let params = new HttpParams();
-        if (placeId) params = params.set('placeId', placeId);
-        if (difficulty) params = params.set('difficulty', difficulty);
-        return this.http.get<Trail[]>(`${environment.API_URL}/trails`, { params });
+    getAll(): Observable<Trail[]> {
+        const result = this.http.get<Trail[]>(`${environment.API_URL}/trails`);
+        return result;
     }
 
     getById(id: number): Observable<Trail> {

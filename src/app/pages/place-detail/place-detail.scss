@@ -1,0 +1,163 @@
+:root{
+    --bg: #f7f8fa;
+    --panel: #ffffff;
+    --text: #1e293b;
+    --muted: #475569;
+    --line: #e2e8f0;
+    --line-strong:#d1d5db;
+    --accent: #0ea5e9;
+    --accent-dark:#0369a1;
+    --ok: #16a34a;
+    --no: #dc2626;
+    --shadow: 0 8px 22px rgba(15,23,42,.08);
+}
+
+:host { display:block; background:var(--bg); }
+
+.wrap{ display:grid; gap:1rem; padding:1rem; }
+
+/* Header */
+.head{
+    display:flex; align-items:center; gap:.75rem; flex-wrap:wrap;
+    h2{ margin:0; color:var(--text); font-size:1.35rem; font-weight:800; letter-spacing:.2px; }
+    .badge-cat{
+        display:inline-block; padding:.25rem .6rem; border-radius:999px;
+        background:#dbeafe; border:1px solid #93c5fd; color:#0b3a5b;
+        font-weight:800; font-size:.78rem; letter-spacing:.3px;
+    }
+}
+
+/* Grid 2 cols */
+.grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+@media (max-width: 980px){
+    .grid{ grid-template-columns: 1fr; }
+}
+
+/* Card */
+.card{
+    background:var(--panel);
+    border:1px solid var(--line-strong);
+    border-radius:14px;
+    padding:1rem;
+    box-shadow: var(--shadow);
+}
+
+/* Key/Value list */
+.kv{ list-style:none; padding:0; margin:0; display:grid; gap:.55rem; }
+.kv li{ display:grid; grid-template-columns: 160px 1fr; align-items:center; gap:.75rem; }
+.kv li.v-top{ align-items:start; }
+.kv .k{
+    color:#64748b; font-weight:700; font-size:.9rem;
+}
+.kv .v{
+    color:var(--text); font-weight:600;
+}
+
+/* Chips */
+.chips{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.5rem; }
+.chip{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:.18rem .6rem; border-radius:999px; font-size:.78rem; font-weight:800; letter-spacing:.3px;
+    border:1px solid transparent;
+    &.ok{ background: var(--ok); color:#182038; }
+    &.no{ background: var(--no); color:#171a3f; }
+}
+.badge{
+    background:#eef2ff; color:#0b3a5b; border:1px solid #93c5fd;
+}
+
+/* Amenities box title spacing */
+.amenities{ margin-top:.75rem; }
+.amenities strong{ color:var(--text); }
+
+/* Mini map */
+.mini-map{
+    height: 320px; width: 100%;
+    border-radius:12px; border:1px solid var(--line);
+    background:#f1f5f9;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.02);
+}
+
+/* Galería */
+.gallery-wrap{ margin-top:.25rem; }
+.gallery-wrap h3, .trails h3{ margin:0 0 .5rem; color:var(--text); font-weight:800; }
+.gallery{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:.6rem;
+}
+.gallery img{
+    width:100%; height:160px; object-fit:cover; border-radius:10px;
+    border:1px solid var(--line);
+    transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.gallery img:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(15,23,42,.18);
+    filter: saturate(1.05);
+}
+
+/* Tabla de senderos (coherente con listados anteriores) */
+.table-wrap{
+    background: var(--panel);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow:auto;
+}
+
+.table{
+    width:100%; border-collapse:separate; border-spacing:0;
+    color: var(--text); font-size: .95rem;
+
+    thead th{
+        position:sticky; top:0; z-index:2;
+        background:#1f2937; color:#fff;
+        text-align:left; font-weight:700; letter-spacing:.1px; font-size:.9rem;
+        border-bottom: 2px solid var(--accent);
+        padding:.85rem .9rem;
+    }
+    tbody td{
+        padding:.75rem .9rem; border-bottom:1px solid var(--line); vertical-align:middle;
+    }
+
+    /* zebra + hover */
+    tbody tr:nth-child(odd){ background:#fff; }
+    tbody tr:nth-child(even){ background:#f9fafb; }
+    tbody tr:hover{ background:#e6f4ff; }
+
+    /* primera columna destacada */
+    tbody td:first-child{
+        background:#eef2ff; color:#0b1220; font-weight:700; position:relative;
+    }
+    tbody td:first-child::before{
+        content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
+        background:var(--accent); border-top-left-radius:8px; border-bottom-left-radius:8px;
+    }
+    tbody tr:hover td:first-child{ background:#dbeafe; }
+    }
+
+    /* Badge dificultad dentro de tabla */
+    .badge.diff{
+    display:inline-block; padding:.2rem .55rem; border-radius:999px;
+    font-size:.75rem; font-weight:800; letter-spacing:.3px; border:1px solid transparent;
+    &.fácil, &.facil{
+        color:#065f46; background:#d1fae5; border-color:#6ee7b7;
+    }
+    &.media{
+        color:#92400e; background:#fef3c7; border-color:#fcd34d;
+    }
+    &.difícil, &.dificil{
+        color:#991b1b; background:#fee2e2; border-color:#fca5a5;
+    }
+}
+
+/* Responsive refinements */
+@media (max-width: 700px){
+    .kv li{ grid-template-columns: 120px 1fr; }
+    .gallery img{ height:140px; }
+}
+@media (max-width: 420px){
+    .kv li{ grid-template-columns: 104px 1fr; }
+}

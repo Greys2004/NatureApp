@@ -18,4 +18,6 @@ export class PlacesComponent implements OnInit {
       this.places = res;
     });
   }
+  trackByPlace = (_: number, p: Place) => p.id;
+
 }

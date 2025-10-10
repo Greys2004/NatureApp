@@ -1,1 +1,71 @@
-<p>place-detail works!</p>
+<div *ngIf="place as p" class="wrap">
+  <header class="head">
+    <h2>{{ p.name }}</h2>
+    <span class="badge-cat" *ngIf="p.category">{{ p.category }}</span>
+  </header>
+
+  <div class="grid">
+    <!-- Columna izquierda: info -->
+    <section class="card info">
+      <ul class="kv">
+        <li><span class="k">Categoría</span><span class="v">{{ p.category || '—' }}</span></li>
+        <li class="v-top"><span class="k">Descripción</span><span class="v">{{ p.description || '—' }}</span></li>
+        <li><span class="k">Lat/Lon</span>
+          <span class="v">
+            {{ p.latitude  | number:'1.4-6' }},
+            {{ p.longitude | number:'1.4-6' }}
+          </span>
+        </li>
+        <li><span class="k">Altitud</span><span class="v">{{ p.elevationMeters ?? '—' }}</span></li>
+        <li><span class="k">Accesible</span>
+          <span class="v">
+            <span class="chip" [class.ok]="p.accessible" [class.no]="!p.accessible">{{ p.accessible ? 'Sí' : 'No' }}</span>
+          </span>
+        </li>
+        <li><span class="k">Entrada</span><span class="v">{{ p.entryFee ?? '—' }}</span></li>
+        <li><span class="k">Horario</span><span class="v">{{ p.openingHours || '—' }}</span></li>
+      </ul>
+
+      <div *ngIf="p.amenities?.length" class="amenities">
+        <strong>Amenities</strong>
+        <div class="chips">
+          <span class="chip badge" *ngFor="let a of p.amenities">{{ a.name }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Columna derecha: mapa -->
+    <section class="card">
+      <div #miniMap id="mini-map" class="mini-map"></div>
+    </section>
+  </div>
+
+  <section *ngIf="p.photos?.length" class="gallery-wrap">
+    <h3>Galería</h3>
+    <div class="gallery">
+      <img *ngFor="let ph of p.photos" [src]="ph.url" [alt]="ph.description || p.name">
+    </div>
+  </section>
+
+  <section *ngIf="p.trails?.length" class="trails">
+    <h3>Senderos</h3>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr><th>Nombre</th><th>Km</th><th>Dificultad</th><th>Tiempo</th><th>Loop</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of p.trails">
+            <td>{{ t.name }}</td>
+            <td>{{ t.distanceKm | number:'1.0-2' }}</td>
+            <td><span class="badge diff" [ngClass]="t.difficulty?.toLowerCase()">{{ t.difficulty }}</span></td>
+            <td>{{ t.estimatedTimeMinutes }} min</td>
+            <td><span class="chip" [class.ok]="t.isLoop" [class.no]="!t.isLoop">{{ t.isLoop ? 'Sí' : 'No' }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<div *ngIf="!place">Cargando...</div>

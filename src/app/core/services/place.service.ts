@@ -12,14 +12,9 @@ export class PlaceService {
       private httpClient : HttpClient
   ) {}
 
-  getAll(category?: string, difficulty?: string): Observable<Place[]> {
-  let params = new HttpParams();
-  if (category) params = params.set('category', category);
-  if (difficulty) params = params.set('difficulty', difficulty);
-
-  const url = `${environment.API_URL}/place`;
-  console.log('Llamando al backend:', url);
-  return this.httpClient.get<Place[]>(url, { params });
+  getAll(): Observable<Place[]> {
+  const result = this.httpClient.get<Place[]> (`${environment.API_URL}/place`);
+  return result;
 }
 
   getById(id: number): Observable<Place> {

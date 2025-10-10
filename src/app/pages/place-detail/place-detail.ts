@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Place } from '../../core/models/place.model';
 import { ActivatedRoute } from '@angular/router';
 import { PlaceService } from '../../core/services/place.service';
-import { environment } from '../../../environments/environment.development';
-import mapboxgl from 'mapbox-gl';
+import { environment } from '../../../environments/environment';
+import * as mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-place-detail',
@@ -12,27 +12,37 @@ import mapboxgl from 'mapbox-gl';
   standalone: false
 })
 export class PlaceDetailComponent implements OnInit {
-
+  @ViewChild('miniMap') miniMapEl?: ElementRef<HTMLDivElement>;
   place?: Place;
   private map?: mapboxgl.Map;
 
-  constructor(private route: ActivatedRoute, private service: PlaceService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private service: PlaceService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.service.getById(id).subscribe(p => {
       this.place = p;
-      if (p?.longitude != null && p?.latitude != null) {
-        (mapboxgl as any).accessToken = environment.MAPBOX_TOKEN;
+      this.cdr.detectChanges();
+
+      if (this.miniMapEl && p?.longitude != null && p?.latitude != null) {
+        const token = environment.MAPBOX_TOKEN;
+
         this.map = new mapboxgl.Map({
-          container: 'mini-map',
+          accessToken: token, 
+          container: this.miniMapEl.nativeElement,
           style: 'mapbox://styles/mapbox/streets-v11',
           center: [p.longitude, p.latitude],
           zoom: 12
         });
-        new mapboxgl.Marker().setLngLat([p.longitude, p.latitude]).addTo(this.map);
+
+        new mapboxgl.Marker()
+          .setLngLat([p.longitude, p.latitude])
+          .addTo(this.map);
       }
     });
   }
-
 }

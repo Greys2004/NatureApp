@@ -18,4 +18,7 @@ export class TrailsComponent {
         this.trails = res;
       });
     }
+
+    trackByTrail = (_: number, t: Trail) => t.id;
+
 }

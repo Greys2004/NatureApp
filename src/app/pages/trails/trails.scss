@@ -1,3 +1,226 @@
-.table{width:100%;border-collapse:collapse}
-.table th,.table td{padding:.5rem;border-bottom:1px solid #e5e7eb}
-.table thead th{background:#f8fafc;text-align:left}
+/* ================================
+   Estilos principales: Senderos
+   ================================ */
+
+:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --text: #1e293b;
+  --muted: #475569;
+  --line: #e2e8f0;
+  --line-strong: #d1d5db;
+  --accent: #0ea5e9;
+  --accent-dark: #0369a1;
+  --ok: #16a34a;
+  --no: #dc2626;
+  --shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+:host {
+  display: block;
+  background: var(--bg);
+  padding: 1rem;
+  min-height: 100vh;
+}
+
+/* ================================
+   Encabezado superior
+   ================================ */
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  h2 {
+    margin: 0;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.3px;
+  }
+}
+
+/* ================================
+   Contenedor de la tabla
+   ================================ */
+.table-wrap {
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: auto;
+}
+
+/* ================================
+   Tabla principal
+   ================================ */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--text);
+  font-size: 0.95rem;
+
+  /* -------- Fila de encabezado -------- */
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #1f2937;
+    color: #ffffff;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    font-size: 0.9rem;
+    border-bottom: 2px solid var(--accent);
+    padding: 0.9rem;
+  }
+
+  /* -------- Celdas del cuerpo -------- */
+  tbody td {
+    padding: 0.8rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+
+  /* -------- Zebra rows -------- */
+  tbody tr:nth-child(odd) {
+    background: #ffffff;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f9fafb;
+  }
+
+  /* -------- Hover -------- */
+  tbody tr:hover {
+    background: #e6f4ff;
+  }
+
+  /* -------- Primera columna destacada -------- */
+  tbody td:first-child {
+    background: #eef2ff;
+    color: #0b1220;
+    font-weight: 700;
+    position: relative;
+  }
+
+  tbody td:first-child::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--accent);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  tbody tr:hover td:first-child {
+    background: #dbeafe;
+  }
+
+  .cell-name {
+    font-weight: 700;
+    color: #0f172a;
+  }
+}
+
+/* ================================
+   Chips y badges
+   ================================ */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border: 1px solid transparent;
+  color: #0b3a5b;
+  background: #dbeafe;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.35px;
+  color: #b8c5e1;
+
+  &.ok {
+    background: var(--ok);
+  }
+
+  &.no {
+    background: var(--no);
+  }
+}
+
+/* ================================
+   Estado vacío
+   ================================ */
+.empty {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 2.5rem;
+  border: 2px dashed var(--line-strong);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--muted);
+
+  h3 {
+    margin: 0.3rem 0 0;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0 0 0.8rem;
+  }
+}
+
+/* ================================
+   Responsive
+   ================================ */
+@media (max-width: 700px) {
+  .table thead {
+    display: none;
+  }
+
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    margin-bottom: 1rem;
+    background: #fff;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .table td {
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+  }
+}

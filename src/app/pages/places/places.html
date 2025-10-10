@@ -1,25 +1,43 @@
-<h2>Lugares</h2>
-
-<table class="table" *ngIf="places?.length">
-    <thead>
+<div *ngIf="places?.length; else emptyState" class="table-wrap">
+    <table class="table">
+        <thead>
         <tr>
-        <th>Nombre</th>
-        <th>Categoría</th>
-        <th>Coordenadas</th>
-        <th>Accesible</th>
-        <th></th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Coordenadas</th>
+            <th>Accesible</th>
+            <th class="col-actions"></th>
         </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let p of places">
-        <td>{{p.name}}</td>
-        <td>{{p.category}}</td>
-        <td>{{p.latitude}}, {{p.longitude}}</td>
-        <td>{{p.accessible ? 'Sí' : 'No'}}</td>
-        <td><a [routerLink]="['/admin','place', p.id]">Ver</a></td>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of places; trackBy: trackByPlace">
+            <td class="cell-name">
+            <span class="name">{{ p.name }}</span>
+            </td>
+            <td>
+            <span class="badge">{{ p.category || 'Sin categoría' }}</span>
+            </td>
+            <td class="cell-coords">
+            {{ p.latitude  | number:'1.4-6' }},
+            {{ p.longitude | number:'1.4-6' }}
+            </td>
+            <td>
+            <span class="chip" [class.ok]="p.accessible" [class.no]="!p.accessible">
+                {{ p.accessible ? 'Sí' : 'No' }}
+            </span>
+            </td>
+            <td class="cell-actions">
+            <a class="btn btn-outline" [routerLink]="['/admin','place', p.id]">Ver</a>
+            </td>
         </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+    </div>
 
-<div *ngIf="!places?.length">No hay lugares.</div>
-
+    <ng-template #emptyState>
+    <div class="empty">
+        <h3>No hay lugares</h3>
+        <p>Agrega tu primer lugar para verlo aquí.</p>
+        <a class="btn btn-primary" [routerLink]="['/admin','place','new']">Crear lugar</a>
+    </div>
+</ng-template>

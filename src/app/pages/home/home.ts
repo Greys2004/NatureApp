@@ -26,7 +26,7 @@ export class Home implements OnInit{
       style: this.style,
       // El container debe coincidir con el id del div en el HTML
       container: 'map',
-      center: [-101.684168,24.121628 ],
+      center: [-95.684168,24.121628 ],
       zoom: 4.2
     });
 
