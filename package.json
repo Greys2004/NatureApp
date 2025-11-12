@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "create:secret-env": "node setup-env.js"
   },
   "prettier": {
     "printWidth": 100,
@@ -28,7 +29,9 @@
     "@angular/forms": "^20.1.0",
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
+    "@types/mapbox-gl": "^3.4.1",
     "dotenv": "^17.2.3",
+    "mapbox-gl": "^2.15.0",
     "ng-zorro-antd": "^20.3.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
