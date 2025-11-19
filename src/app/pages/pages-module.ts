@@ -18,6 +18,8 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @NgModule({
     declarations: [
@@ -35,6 +37,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
         NzIconModule,
         NzTagModule,
         NzButtonModule,
+        NzSpinModule,
+        NzModalModule
     ],
     providers: [
         PlaceService,

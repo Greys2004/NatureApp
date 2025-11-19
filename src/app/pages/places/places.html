@@ -1,43 +1,153 @@
-<div *ngIf="places?.length; else emptyState" class="table-wrap">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Coordenadas</th>
-            <th>Accesible</th>
-            <th class="col-actions"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let p of places; trackBy: trackByPlace">
-            <td class="cell-name">
-            <span class="name">{{ p.name }}</span>
-            </td>
-            <td>
-            <span class="badge">{{ p.category || 'Sin categoría' }}</span>
-            </td>
-            <td class="cell-coords">
-            {{ p.latitude  | number:'1.4-6' }},
-            {{ p.longitude | number:'1.4-6' }}
-            </td>
-            <td>
-            <span class="chip" [class.ok]="p.accessible" [class.no]="!p.accessible">
-                {{ p.accessible ? 'Sí' : 'No' }}
-            </span>
-            </td>
-            <td class="cell-actions">
-            <a class="btn btn-outline" [routerLink]="['/admin','place', p.id]">Ver</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    </div>
+<div class="head">
+    <h2>Lugares</h2>
 
-    <ng-template #emptyState>
-    <div class="empty">
-        <h3>No hay lugares</h3>
-        <p>Agrega tu primer lugar para verlo aquí.</p>
-        <a class="btn btn-primary" [routerLink]="['/admin','place','new']">Crear lugar</a>
+    <div class="actions">
+        <button class="btn btn-primary" (click)="analyzePlaces()">
+        Analizar lugares con IA
+        </button>
     </div>
-</ng-template>
+</div>
+
+<nz-spin [nzSpinning]="loadingAI" nzTip="Analizando lugares...">
+    <div *ngIf="places?.length; else emptyState" class="table-wrap">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Coordenadas</th>
+                <th>Accesible</th>
+                <th class="col-actions"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let p of places; trackBy: trackByPlace">
+                <td class="cell-name">
+                <span class="name">{{ p.name }}</span>
+                </td>
+                <td>
+                <span class="badge">{{ p.category || 'Sin categoría' }}</span>
+                </td>
+                <td class="cell-coords">
+                {{ p.latitude  | number:'1.4-6' }},
+                {{ p.longitude | number:'1.4-6' }}
+                </td>
+                <td>
+                <span class="chip" [class.ok]="p.accessible" [class.no]="!p.accessible">
+                    {{ p.accessible ? 'Sí' : 'No' }}
+                </span>
+                </td>
+                <td class="cell-actions">
+                <a class="btn btn-outline" [routerLink]="['/admin','place', p.id]">Ver</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <ng-template #emptyState>
+        <div class="empty">
+            <h3>No hay lugares</h3>
+            <p>Agrega tu primer lugar para verlo aquí.</p>
+            <a class="btn btn-primary" [routerLink]="['/admin','place','new']">Crear lugar</a>
+        </div>
+    </ng-template>
+</nz-spin>
+
+<nz-modal
+    [(nzVisible)]="modalVisible"
+    nzTitle="Análisis de lugares con IA"
+    nzWidth="860"
+    nzCentered="true"
+    nzClosable="true"
+    [nzFooter]="null"
+    (nzOnCancel)="modalVisible = false"
+    nzClassName="ai-modal"
+>
+    <ng-container *nzModalContent>
+        <nz-spin [nzSpinning]="loadingAI" nzTip="Analizando lugares...">
+        <div *ngIf="aiAnalysis as a" class="ai-modal-content">
+
+            <!-- Resumen superior -->
+            <div class="ai-summary-row">
+            <div class="ai-summary-card">
+                <span class="label">Total de lugares</span>
+                <span class="value">{{ places?.length || 0 }}</span>
+            </div>
+            <div class="ai-summary-card">
+                <span class="label">% Accesibles</span>
+                <span class="value">
+                {{ a.accessiblePercentage | number:'1.0-2' }} %
+                </span>
+            </div>
+            <div class="ai-summary-card">
+                <span class="label">Categorías detectadas</span>
+                <span class="value">{{ a.topCategories.length }}</span>
+            </div>
+            </div>
+
+            <!-- Contenido en 2 columnas -->
+            <div class="ai-grid">
+            <!-- Columna izquierda -->
+            <section class="ai-block">
+                <h3>Categorías más frecuentes</h3>
+                <ul class="pill-list">
+                <li *ngFor="let c of a.topCategories" class="pill">
+                    <span class="pill-name">{{ c.name }}</span>
+                    <span class="pill-count">{{ c.count }} lugares</span>
+                </li>
+                </ul>
+
+                <h3>Dificultad</h3>
+                <div class="difficulty-bars">
+                <div class="difficulty-row">
+                    <span class="diff-label easy">Easy</span>
+                    <div class="bar">
+                    <span class="fill" [style.--value]="a.difficultyStats.easy"></span>
+                    </div>
+                    <span class="diff-value">{{ a.difficultyStats.easy }}</span>
+                </div>
+                <div class="difficulty-row">
+                    <span class="diff-label moderate">Moderate</span>
+                    <div class="bar">
+                    <span class="fill" [style.--value]="a.difficultyStats.moderate"></span>
+                    </div>
+                    <span class="diff-value">{{ a.difficultyStats.moderate }}</span>
+                </div>
+                <div class="difficulty-row">
+                    <span class="diff-label hard">Hard</span>
+                    <div class="bar">
+                    <span class="fill" [style.--value]="a.difficultyStats.hard"></span>
+                    </div>
+                    <span class="diff-value">{{ a.difficultyStats.hard }}</span>
+                </div>
+                </div>
+            </section>
+
+            <!-- Columna derecha -->
+            <section class="ai-block">
+                <h3>Lugares destacados</h3>
+                <ul class="tag-list" *ngIf="a.highlightPlaces?.length; else noHighlights">
+                <li *ngFor="let name of a.highlightPlaces" class="tag">
+                    {{ name }}
+                </li>
+                </ul>
+                <ng-template #noHighlights>
+                <p class="muted">La IA no encontró lugares destacados específicos.</p>
+                </ng-template>
+
+                <h3>Patrones detectados</h3>
+                <ul class="pattern-list" *ngIf="a.patterns?.length; else noPatterns">
+                <li *ngFor="let p of a.patterns">
+                    {{ p }}
+                </li>
+                </ul>
+                <ng-template #noPatterns>
+                <p class="muted">Sin patrones relevantes detectados.</p>
+                </ng-template>
+            </section>
+            </div>
+        </div>
+        </nz-spin>
+    </ng-container>
+</nz-modal>

@@ -1,37 +1,197 @@
-<div *ngIf="trails?.length; else emptyState" class="table-wrap">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Distancia (km)</th>
-            <th>Dificultad</th>
-            <th>Tiempo (min)</th>
-            <th>Loop</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let t of trails; trackBy: trackByTrail">
-            <td class="cell-name">{{ t.name }}</td>
-            <td>{{ t.distanceKm | number:'1.0-2' }}</td>
-            <td>
-            <span class="badge">
-                {{ t.difficulty || '—' }}
-            </span>
-            </td>
-            <td>{{ t.estimatedTimeMinutes }}</td>
-            <td>
-            <span class="chip" [class.ok]="t.isLoop" [class.no]="!t.isLoop">
-                {{ t.isLoop ? 'Sí' : 'No' }}
-            </span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    </div>
+<div class="head">
+  <h2>Senderos</h2>
 
-    <ng-template #emptyState>
+  <div class="actions">
+    <button class="btn btn-primary" (click)="analyzeTrails()">
+      Analizar senderos con IA
+    </button>
+  </div>
+</div>
+
+<nz-spin [nzSpinning]="loadingAI" nzTip="Analizando senderos...">
+  <div *ngIf="trails?.length; else emptyState" class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Distancia (km)</th>
+          <th>Dificultad</th>
+          <th>Tiempo (min)</th>
+          <th>Loop</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let t of trails; trackBy: trackByTrail">
+          <!-- Nombre similar a places (cell-name + span.name) -->
+          <td class="cell-name">
+            <span class="name">{{ t.name }}</span>
+          </td>
+
+          <!-- Distancia -->
+          <td>
+            {{ t.distanceKm | number: '1.0-2' }}
+          </td>
+
+          <!-- Dificultad con badge como en places -->
+          <td>
+            <span class="badge">
+              {{ t.difficulty || '—' }}
+            </span>
+          </td>
+
+          <!-- Tiempo estimado -->
+          <td>
+            {{ t.estimatedTimeMinutes }}
+          </td>
+
+          <!-- Loop con chip como accesible en places -->
+          <td>
+            <span class="chip" [class.ok]="t.isLoop" [class.no]="!t.isLoop">
+              {{ t.isLoop ? 'Sí' : 'No' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #emptyState>
     <div class="empty">
-        <h3>No hay senderos</h3>
-        <p>Agrega tu primer sendero para verlo aquí.</p>
+      <h3>No hay senderos</h3>
+      <p>Agrega tu primer sendero para verlo aquí.</p>
     </div>
-</ng-template>
+  </ng-template>
+</nz-spin>
+
+<!-- Modal de análisis con IA para senderos -->
+<nz-modal
+  [(nzVisible)]="modalVisible"
+  nzTitle="Análisis de senderos con IA"
+  nzWidth="880"
+  nzCentered="true"
+  nzClosable="true"
+  [nzFooter]="null"
+  (nzOnCancel)="modalVisible = false"
+  nzClassName="ai-modal"
+>
+  <ng-container *nzModalContent>
+      <div *ngIf="aiAnalysis as a" class="ai-modal-content">
+        <div class="ai-summary-row">
+
+          <div class="ai-summary-card">
+            <span class="label">Total de senderos</span>
+            <span class="value">{{ a.totalTrails }}</span>
+          </div>
+
+          <div class="ai-summary-card">
+            <span class="label">Distancia promedio</span>
+            <span class="value">
+              {{ a.averageDistanceKm | number:'1.1-2' }} km
+            </span>
+          </div>
+
+          <div class="ai-summary-card">
+            <span class="label">% de rutas tipo loop</span>
+            <span class="value">
+              {{ a.loopPercentage | number:'1.0-2' }} %
+            </span>
+          </div>
+
+        </div>
+        <div class="ai-grid">
+
+          <!-- COLUMNA IZQUIERDA -->
+          <section class="ai-block">
+
+            <!-- Dificultad -->
+            <h3>Distribución de dificultad</h3>
+            <div class="difficulty-bars">
+
+              <div class="difficulty-row">
+                <span class="diff-label easy">Easy</span>
+                <div class="bar">
+                  <span
+                    class="fill"
+                    [style.--value]="a.difficultyCounts.easy * 100 / a.totalTrails"
+                  ></span>
+                </div>
+                <span class="diff-value">{{ a.difficultyCounts.easy }}</span>
+              </div>
+
+              <div class="difficulty-row">
+                <span class="diff-label moderate">Moderate</span>
+                <div class="bar">
+                  <span
+                    class="fill"
+                    [style.--value]="a.difficultyCounts.moderate * 100 / a.totalTrails"
+                  ></span>
+                </div>
+                <span class="diff-value">{{ a.difficultyCounts.moderate }}</span>
+              </div>
+
+              <div class="difficulty-row">
+                <span class="diff-label hard">Hard</span>
+                <div class="bar">
+                  <span
+                    class="fill"
+                    [style.--value]="a.difficultyCounts.hard * 100 / a.totalTrails"
+                  ></span>
+                </div>
+                <span class="diff-value">{{ a.difficultyCounts.hard }}</span>
+              </div>
+
+            </div>
+
+            <!-- Distancias -->
+            <h3 style="margin-top: 1rem;">Tiempos y distancias</h3>
+
+            <ul class="pill-list">
+              <li class="pill">
+                <span class="pill-name">Distancia promedio:</span>
+                <span class="pill-count">{{ a.averageDistanceKm | number:'1.1-2' }} km</span>
+              </li>
+
+              <li class="pill">
+                <span class="pill-name">Tiempo promedio:</span>
+                <span class="pill-count">{{ a.averageTimeMinutes }} min</span>
+              </li>
+            </ul>
+
+          </section>
+
+          <!-- COLUMNA DERECHA -->
+          <section class="ai-block">
+
+            <!-- Senderos notables -->
+            <h3>Senderos destacados</h3>
+
+            <ul class="tag-list" *ngIf="a.notableTrails?.length; else noNotables">
+              <li *ngFor="let n of a.notableTrails" class="tag">
+                {{ n.name }} · {{ n.reason }}
+              </li>
+            </ul>
+
+            <ng-template #noNotables>
+              <p class="muted">La IA no encontró senderos destacados.</p>
+            </ng-template>
+
+            <!-- Patrones -->
+            <h3 style="margin-top: 1rem;">Patrones detectados</h3>
+
+            <ul class="pattern-list" *ngIf="a.patterns?.length; else noPatterns">
+              <li *ngFor="let p of a.patterns">{{ p }}</li>
+            </ul>
+
+            <ng-template #noPatterns>
+              <p class="muted">Sin patrones relevantes detectados.</p>
+            </ng-template>
+
+          </section>
+
+        </div>
+
+      </div>
+  </ng-container>
+</nz-modal>
+
