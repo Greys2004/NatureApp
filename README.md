@@ -7,7 +7,7 @@
 ![Project](https://img.shields.io/badge/NATURE_APP-21B8A6?style=for-the-badge&labelColor=241239)
 ![Maintainer](https://img.shields.io/badge/Maintained_by-Greys2004-974ECA?style=for-the-badge&labelColor=241239)
 
-[👩‍💻 Author](https://github.com/Greys2004) · [🌐 Portfolio](https://greys2004.github.io/Curriculum/) · [↔ Companion repository](https://github.com/Greys2004/NatureApi)
+[👩‍💻 Author](https://github.com/Greys2004) · [↔ Companion repository](https://github.com/Greys2004/NatureApi)
 
 </div>
 
@@ -57,6 +57,6 @@ Never commit production tokens, credentials or connection strings.
 <div align="center">
 
 **Developed by Greys Alexa Almanza Vega**  
-[GitHub](https://github.com/Greys2004) · [Portfolio](https://greys2004.github.io/Curriculum/)
+[GitHub](https://github.com/Greys2004)
 
 </div>
