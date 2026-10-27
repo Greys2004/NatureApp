@@ -1,59 +1,42 @@
-# NatureApp
+<div align="center">
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.6.
+# ✦ NatureApp — Parks & Trails
 
-## Development server
+**Frontend application for parks and trails administration, connected to the NatureApi backend.**
 
-To start a local development server, run:
+![Documentation](https://img.shields.io/badge/Documentation-Updated-8B5CF6?style=for-the-badge) ![Project](https://img.shields.io/badge/Greys2004-Portfolio-4C1D95?style=for-the-badge)
 
-```bash
-ng serve
-```
+</div>
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## Overview
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Frontend application for parks and trails administration, connected to the NatureApi backend.
 
-```bash
-ng generate component component-name
-```
+## Technology
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Angular 20, TypeScript, Mapbox GL, NG-ZORRO, Docker and Nginx.
 
-```bash
-ng generate --help
-```
+## Local development
 
-## Building
-
-To build the project run:
+Clone this repository and enter its directory. Then run:
 
 ```bash
-ng build
+npm ci
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Node.js and npm; configure backend URLs and keys locally.
 
-## Running unit tests
+## Related repository
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+[NatureApi](https://github.com/Greys2004/NatureApi)
 
-```bash
-ng test
-```
+## Notes
 
-## Running end-to-end tests
+This README documents the project's verified technologies and intended use. Deployment credentials and application-specific environment values are not included. Do not commit API keys or production secrets.
 
-For end-to-end (e2e) testing, run:
+## Author
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Greys Alexa Almanza Vega** · [GitHub](https://github.com/Greys2004) · [Portfolio](https://greys2004.github.io/Curriculum/)
